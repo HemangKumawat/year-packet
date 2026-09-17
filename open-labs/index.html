@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenDocket — weekly public lab agenda</title>
+  <style>
+    :root {
+      --bg: #10131a; --ink: #e7ecf5; --muted: #93a0b8; --accent: #7eb6ff;
+      --ok: #8fd99a; --veto: #ff8f8f; --line: rgba(231,236,245,.12);
+      --font: "IBM Plex Sans", system-ui, sans-serif;
+    }
+    body { margin: 0; font-family: var(--font); color: var(--ink);
+      background: radial-gradient(900px 420px at 0% 0%, #1a2740, var(--bg)); }
+    main { max-width: 860px; margin: 0 auto; padding: 1.75rem 1.2rem 3rem; }
+    h1 { font-size: 1.7rem; letter-spacing: -.02em; margin: .35rem 0; }
+    .sub, .meta { color: var(--muted); }
+    .banner { font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; color: var(--accent); font-weight: 600; }
+    .agents { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 1.25rem; }
+    .agents span { border: 1px solid var(--line); border-radius: 999px; padding: .35rem .7rem; font-size: .82rem; }
+    .agents span.on { border-color: var(--accent); color: var(--accent); }
+    button { font: inherit; cursor: pointer; border-radius: 999px; border: 0; padding: .55rem 1rem;
+      background: var(--accent); color: #0c1220; font-weight: 600; }
+    .card { border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; margin: .65rem 0; background: rgba(0,0,0,.28); }
+    .card.vetoed { opacity: .72; border-color: rgba(255,143,143,.45); }
+    .card.ranked { border-color: rgba(143,217,154,.45); }
+    .status { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .status.pass { color: var(--ok); }
+    .status.fail { color: var(--veto); }
+    .log { margin-top: 1.25rem; font-family: ui-monospace, monospace; font-size: .82rem;
+      border: 1px solid var(--line); border-radius: 8px; padding: .75rem; background: rgba(0,0,0,.35); white-space: pre-wrap; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="banner">Parallel track · not Taxfix · not filing</p>
+    <h1>OpenDocket</h1>
+    <p class="sub">Public backlog that ranks which problems <strong>open / publicly funded labs</strong> should solve next — so grants follow evidence. Nightwatch <em>runs</em> the experiment; this <em>chooses</em> it.</p>
+
+    <div class="agents" id="agentPills">
+      <span data-a="scout">Scout</span>
+      <span data-a="gate">Gate</span>
+      <span data-a="clerk">Clerk</span>
+    </div>
+    <button type="button" id="run">Run Scout → Gate → Clerk</button>
+
+    <div id="board"></div>
+    <div class="log" id="log" hidden></div>
+    <p class="meta" style="margin-top:1.25rem">Taxfix jury demo: <a href="../year-packet/">Year Packet</a> · Notes: <a href="./README.md">README</a></p>
+  </main>
+  <script>
+    const CARDS = [
+      {
+        id: "c1",
+        title: "Seamless DUNEuro → Zeffiro handoff",
+        why: "PerEpi forward↔inverse seam still needs a human in the middle",
+        citation: "Höltershinken et al., SIAM J. Sci. Comput. 2025",
+        capacity: "Münster biomagnetism + Tampere inverse",
+        failed: "Five-year manual bridge; no automated mesh/units adapter",
+      },
+      {
+        id: "c2",
+        title: "Unattended overnight run watchdog (domain-agnostic)",
+        why: "Grad-student 3AM restarts lose weeks of data",
+        citation: "Nightwatch thesis / ALETHEIA run envelope",
+        capacity: "Open core + lab adapters",
+        failed: "Vendor macros abort without judgment",
+      },
+      {
+        id: "c3",
+        title: "Generic AI ELN for every wet lab",
+        why: "Notebooks are annoying",
+        citation: "",
+        capacity: "",
+        failed: "",
+      },
+      {
+        id: "c4",
+        title: "Crypto-funded open lab coin",
+        why: "Incentives",
+        citation: "blog post, no DOI",
+        capacity: "anon Discord",
+        failed: "",
+      },
+      {
+        id: "c5",
+        title: "Reproduce local-subtraction FEM in BrainStorm-DUNEuro CI",
+        why: "Portability proof across toolchains",
+        citation: "DOI 10.1137/23M1582874",
+        capacity: "Münster + open CI runners",
+        failed: "One-off laptop builds, no continuous check",
+      },
+    ];
+
+    function gate(card) {
+      const reasons = [];
+      if (!card.citation || /blog post/i.test(card.citation)) reasons.push("no citable source");
+      if (!card.capacity) reasons.push("no named lab capacity");
+      if (!card.failed) reasons.push("no failed-attempt trail");
+      return reasons;
+    }
+
+    const board = document.getElementById("board");
+    const log = document.getElementById("log");
+    const pills = [...document.querySelectorAll("#agentPills span")];
+
+    function setAgent(id) {
+      pills.forEach((p) => p.classList.toggle("on", p.dataset.a === id));
+    }
+
+    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+    async function run() {
+      log.hidden = false;
+      log.textContent = "";
+      board.innerHTML = "";
+      const lines = [];
+
+      setAgent("scout");
+      lines.push("[Scout] 5 candidate cards from grant seam + Nightwatch wedge");
+      log.textContent = lines.join("\n");
+      await sleep(350);
+
+      setAgent("gate");
+      const judged = CARDS.map((c) => ({ ...c, vetoes: gate(c) }));
+      for (const c of judged) {
+        if (c.vetoes.length) lines.push(`[Gate] VETO ${c.id}: ${c.vetoes.join("; ")}`);
+        else lines.push(`[Gate] PASS ${c.id}`);
+      }
+      log.textContent = lines.join("\n");
+      await sleep(450);
+
+      setAgent("clerk");
+      const ranked = judged.filter((c) => !c.vetoes.length);
+      lines.push(`[Clerk] Weekly docket: ${ranked.map((c) => c.id).join(", ")} (${judged.length - ranked.length} vetoed)`);
+      log.textContent = lines.join("\n");
+
+      for (const c of judged) {
+        const div = document.createElement("div");
+        const vetoed = c.vetoes.length > 0;
+        div.className = "card " + (vetoed ? "vetoed" : "ranked");
+        const st = document.createElement("div");
+        st.className = "status " + (vetoed ? "fail" : "pass");
+        st.textContent = vetoed ? "Gate veto · " + c.vetoes.join(" · ") : "Ranked on docket";
+        const h = document.createElement("h3");
+        h.style.margin = ".25rem 0";
+        h.textContent = c.title;
+        const m = document.createElement("p");
+        m.className = "meta";
+        m.textContent = `Why: ${c.why} · Cite: ${c.citation || "—"} · Capacity: ${c.capacity || "—"}`;
+        div.append(st, h, m);
+        board.appendChild(div);
+      }
+      pills.forEach((p) => p.classList.add("on"));
+    }
+
+    document.getElementById("run").addEventListener("click", run);
+  </script>
+</body>
+</html>

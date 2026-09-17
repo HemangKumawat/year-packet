@@ -1,0 +1,1 @@
+Six honest stages: deterministic rules, not live agents. Cursor wrote the UI, the Claim Guard, the CLI twin and this video script; Grok ran the adversarial review against Taxfix's live product. The guard refuses any sentence that promises a refund or a deduction.

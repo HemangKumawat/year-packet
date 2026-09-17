@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f1412" />
+  <title>Year Packet — a calm Q4 for Taxfix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="stage-bg" aria-hidden="true"></div>
+
+  <aside class="desk">
+    <p class="desk-kicker">Cursor Hackathon @ Taxfix · solo entry · Hemang</p>
+    <h1 class="desk-title">Year Packet</h1>
+    <p class="desk-lede">Taxfix already stores the PDF. Year Packet checks whether this year still needs something from you — a home-office day log and a payment-year check you cannot reconstruct in March — in a tone that is calm on purpose.</p>
+    <ul class="desk-edges">
+      <li><strong>Day Meter</strong> — home-office days × €6 (cap 210 / €1,260) against the €1,230 allowance the tax office applies automatically. Receipt euros never feed it.</li>
+      <li><strong>One question per “maybe”</strong> — “Was this mostly for work?” turns an unclear receipt into keep or noise, with the reason. Resolved questions are the only thing we count.</li>
+      <li><strong>Completeness, not storage</strong> — craftsman: labour share + bank transfer; donation over €300: fetch the Zuwendungsbestätigung now.</li>
+      <li><strong>Claim Guard</strong> — no refund or deduction euro in any sentence, ever.</li>
+      <li><strong>Handoff</strong> — each kept item already answers a Taxfix filing question.</li>
+    </ul>
+    <div class="desk-actions">
+      <button type="button" id="tourBtn" class="primary">Play tour</button>
+      <button type="button" id="hoDesk" class="ghost">+1 home-office day</button>
+    </div>
+    <p class="desk-hint">Built in Cursor · adversarial review by Grok · deterministic rules over demo receipts · CLI twin <code>./demo.sh</code></p>
+  </aside>
+
+  <div class="phone-wrap">
+    <div class="phone" id="phone">
+      <div class="phone-notch" aria-hidden="true"></div>
+      <div class="status-bar">
+        <span id="clock">17:42</span>
+        <span class="status-right">Year Packet</span>
+      </div>
+
+      <div class="app" id="app">
+        <p id="errBanner" class="err" hidden></p>
+
+        <section class="screen title-screen" data-screen="title" id="screen-title" hidden>
+          <div class="title-card">
+            <p class="sub">Cursor Hackathon @ Taxfix · solo entry · Hemang</p>
+            <h1>Year Packet</h1>
+            <p class="hero">Off-season, the tax app should feel calm: log a day, keep the right receipt, know why.</p>
+            <ul class="title-list">
+              <li>Working prototype over demo receipts</li>
+              <li>Built in Cursor · Grok did the adversarial Taxfix research</li>
+              <li>No refund numbers. No streaks. Nothing due today.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="home" id="screen-home">
+          <header class="app-head">
+            <div class="brand">Year Packet</div>
+            <p class="sub">2026 · September · Q4 starts in two weeks</p>
+          </header>
+          <p class="hero">How many days did you work from home this year?</p>
+          <p class="muted">A log you can't rebuild in March. Each day is <em>€6</em> in a Taxfix question later; the €1,230 allowance applies on its own regardless. Nothing here is a refund.</p>
+
+          <div class="clever-card" id="cleverCard">
+            <div class="clever-ring" id="cleverRing" style="--pct: 0">
+              <div class="clever-ring-inner">
+                <div class="clever-eur" id="cleverEur">0</div>
+                <div class="clever-of">of 210 days</div>
+              </div>
+            </div>
+            <div class="clever-copy">
+              <div class="clever-label" id="cleverLabel">Days you remember</div>
+              <p class="clever-hint" id="cleverHint">Tap a day when you remember one. Up to 210 days count.</p>
+            </div>
+          </div>
+
+          <div class="week-card">
+            <div class="dec-title">This week · 30 seconds</div>
+            <p>How many days did you work from home? Tap once per day. That's the whole habit — no streaks, no reminders unless you ask.</p>
+            <button type="button" class="ghost block" id="hoBtn">+1 home-office day</button>
+            <p class="muted center" id="hoCount">0 / 210 days</p>
+          </div>
+
+          <div class="dec-strip">
+            <div class="dec-title">Easy to lose, easy to keep</div>
+            <p id="decStrip">Christmas donations and craftsman invoices — a photo now saves a search in spring. The year you paid is what counts.</p>
+          </div>
+
+          <button type="button" class="primary block" data-go="capture">Add a receipt</button>
+        </section>
+
+        <section class="screen" data-screen="capture" id="screen-capture" hidden>
+          <header class="app-head">
+            <button type="button" class="back" data-go="home" aria-label="Back">‹</button>
+            <div class="brand">Capture</div>
+          </header>
+          <div class="viewfinder" id="viewfinder">
+            <div class="scan-line" aria-hidden="true"></div>
+            <div class="corner tl"></div><div class="corner tr"></div>
+            <div class="corner bl"></div><div class="corner br"></div>
+            <p class="vf-label" id="vfLabel">Tap the shutter · demo receipts</p>
+          </div>
+          <button type="button" class="shutter" id="shutter" aria-label="Shutter"></button>
+          <p class="muted center">Prototype: four demo receipts stand in for the camera.</p>
+        </section>
+
+        <section class="screen" data-screen="packet" id="screen-packet" hidden>
+          <header class="app-head">
+            <div class="brand">Packet 2026</div>
+            <p class="sub" id="packetSub">keep · maybe · one question each</p>
+          </header>
+          <ul id="itemList" class="items"></ul>
+          <p class="edge-note">A “maybe” is one question away from keep or noise. Answer it once; it stays answered.</p>
+        </section>
+
+        <section class="screen" data-screen="agents" id="screen-agents" hidden>
+          <header class="app-head">
+            <div class="brand">Pipeline</div>
+            <p class="sub">Six stages · one honest contract each</p>
+          </header>
+          <p class="craft-note">
+            <strong>How it was built:</strong> Cursor wrote this UI, the Claim Guard, the CLI twin and the video script; Grok ran the adversarial review against Taxfix's live product.
+            Stages are deterministic rules over demo receipts — not live model agents.
+          </p>
+          <ol id="agentList" class="agents"></ol>
+          <button type="button" class="primary block" id="runBtn">Run the packet</button>
+          <div id="stages" class="stages"></div>
+          <p id="guardBanner" class="guard" hidden></p>
+        </section>
+
+        <section class="screen" data-screen="ready" id="screen-ready" hidden>
+          <header class="app-head">
+            <div class="brand">Handoff</div>
+            <p class="sub">What Taxfix will ask in 2027 — already answered</p>
+          </header>
+          <div class="ready-card locked" id="unlockCard">
+            <div class="lock-badge">No filing tonight</div>
+            <h2>Your packet becomes answers, not homework</h2>
+            <p>Each kept item maps to a Taxfix filing question. The wage-tax certificate arrives after year-end on its own; Taxfix Expert can even fetch it.</p>
+            <ul class="ready-list" id="handoffList"></ul>
+            <ul class="ready-list" id="gapList"></ul>
+          </div>
+          <p class="disclaimer">Not tax advice. Prototype over demo receipts.</p>
+        </section>
+      </div>
+
+      <nav class="tabbar" aria-label="Primary">
+        <button type="button" class="tab on" data-tab="home"><span>Home</span></button>
+        <button type="button" class="tab" data-tab="capture"><span>Scan</span></button>
+        <button type="button" class="tab" data-tab="packet"><span>Packet</span></button>
+        <button type="button" class="tab" data-tab="agents"><span>Pipeline</span></button>
+        <button type="button" class="tab" data-tab="ready"><span>Handoff</span></button>
+      </nav>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

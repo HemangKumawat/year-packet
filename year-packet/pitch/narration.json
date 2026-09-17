@@ -1,0 +1,22 @@
+{
+  "voice": "af_heart",
+  "note": "Offsets follow record-pitch.mjs holds. Each segment must fit its window; mix-voice.mjs measures and trims speed ≤1.12x.",
+  "segments": [
+    { "id": "s1", "at": 0.5, "max": 6.5,
+      "text": "Year Packet. A solo entry for Taxfix, built in Cursor. Off-season, a tax app should feel calm." },
+    { "id": "s2", "at": 7.5, "max": 8.5,
+      "text": "One question, no pressure: how many days did you work from home this year? A log you can't rebuild in March." },
+    { "id": "s3", "at": 16.5, "max": 11.5,
+      "text": "Each tap is a day. Six euros in a Taxfix question later. Forty days is still a log, not a verdict. And nothing here is a refund." },
+    { "id": "s4", "at": 28.5, "max": 12.5,
+      "text": "Scan what's lying around. Four demo receipts stand in for the camera. The packet sorts them: keep, maybe, noise. And it finds the one question worth asking." },
+    { "id": "s5", "at": 41.5, "max": 17.5,
+      "text": "Craftsman invoice: only the four hundred twenty euros of labour count; material doesn't. The donation is over three hundred euros, so ask the charity for the receipt now, while they still pick up the phone. MediaMarkt? One tap: mostly for work. Answered once, it stays answered." },
+    { "id": "s6", "at": 59.5, "max": 17.5,
+      "text": "Six honest stages: deterministic rules, not live agents. Cursor wrote the UI, the Claim Guard, the CLI twin and this video script; Grok ran the adversarial review against Taxfix's live product. The guard refuses any sentence that promises a refund or a deduction." },
+    { "id": "s7", "at": 77.5, "max": 9.5,
+      "text": "Handoff: no filing tonight. Every kept item already answers a Taxfix question next year. One thing is still worth fetching." },
+    { "id": "s8", "at": 87.5, "max": 9.0,
+      "text": "That's Year Packet. Calm, honest, and only as much habit as one tap a day. Thank you." }
+  ]
+}

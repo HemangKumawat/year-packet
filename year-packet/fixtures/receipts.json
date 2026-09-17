@@ -1,0 +1,38 @@
+[
+  {
+    "id": "r1",
+    "filename": "spende-tafel-berlin.pdf",
+    "merchant": "Berliner Tafel e.V.",
+    "date": "2026-09-10",
+    "amount_eur": 350,
+    "has_receipt": false,
+    "raw_text": "Spende 350,00 EUR per Überweisung. Gemeinnütziger Verein. Zuwendungsbestätigung folgt auf Anfrage."
+  },
+  {
+    "id": "r2",
+    "filename": "handwerker-bad-rechnung.pdf",
+    "merchant": "Schmidt Sanitär GmbH",
+    "date": "2026-09-05",
+    "amount_eur": 890,
+    "labour_eur": 420,
+    "material_eur": 470,
+    "paid_by": "Überweisung",
+    "raw_text": "Arbeitslohn 420 EUR, Material 470 EUR. Bezahlt per Überweisung 05.09.2026."
+  },
+  {
+    "id": "r3",
+    "filename": "usbc-hub-media-markt.jpg",
+    "merchant": "MediaMarkt",
+    "date": "2026-09-12",
+    "amount_eur": 149,
+    "raw_text": "USB-C Hub + Monitorarm. Rechnung."
+  },
+  {
+    "id": "r4",
+    "filename": "deutschlandticket-sep.pdf",
+    "merchant": "BVG",
+    "date": "2026-09-01",
+    "amount_eur": 58,
+    "raw_text": "Deutschlandticket / Jobticket monatlich September 2026."
+  }
+]
